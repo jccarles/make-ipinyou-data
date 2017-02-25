@@ -9,11 +9,13 @@ if len(sys.argv) < 5:
 oses = ["windows", "ios", "mac", "android", "linux"]
 browsers = ["chrome", "sogou", "maxthon", "safari", "firefox", "theworld", "opera", "ie"]
 
-f1s = ["weekday", "hour", "IP", "region", "city", "adexchange", "domain", "slotid", "slotwidth", "slotheight", "slotvisibility", "slotformat", "creative", "advertiser"]
+f1s = ["weekday", "hour", "IP", "region", "city", "adexchange", "domain", "slotid", "slotwidth", "slotheight",
+       "slotvisibility", "slotformat", "creative", "advertiser"]
 
 f1sp = ["useragent", "slotprice"]
 
 f2s = ["weekday,region"]
+
 
 def featTrans(name, content):
     content = content.lower()
@@ -42,20 +44,18 @@ def featTrans(name, content):
         else:
             return "0"
 
+
 def getTags(content):
     if content == '\n' or len(content) == 0:
         return ["null"]
     return content.strip().split(',')
 
+
 # initialize
 namecol = {}
-featindex = {}
-maxindex = 0
+featset = set()
 fi = open(sys.argv[1], 'r')
 first = True
-
-featindex['truncate'] = maxindex
-maxindex += 1
 
 for line in fi:
     s = line.split('\t')
@@ -64,33 +64,43 @@ for line in fi:
         for i in range(0, len(s)):
             namecol[s[i].strip()] = i
             if i > 0:
-                featindex[str(i) + ':other'] = maxindex
-                maxindex += 1
+                featset.add(str(i) + ':other')
         continue
     for f in f1s:
         col = namecol[f]
         content = s[col]
         feat = str(col) + ':' + content
-        if feat not in featindex:
-            featindex[feat] = maxindex
-            maxindex += 1
+        if feat not in featset:
+            featset.add(feat)
     for f in f1sp:
         col = namecol[f]
         content = featTrans(f, s[col])
         feat = str(col) + ':' + content
-        if feat not in featindex:
-            featindex[feat] = maxindex
-            maxindex += 1
+        if feat not in featset:
+            featset.add(feat)
     col = namecol["usertag"]
     tags = getTags(s[col])
     for tag in tags:
         feat = str(col) + ':' + tag
-        if feat not in featindex:
-            featindex[feat] = maxindex
-            maxindex += 1
+        if feat not in featset:
+            featset.add(feat)
 
-print 'feature size: ' + str(maxindex)
+print 'feature size:', len(featset)
+
+
+def feat_sorter(feat):
+    s = feat.find(':')
+    return int(feat[:s]), feat[s + 1:]
+
+
+featindex = {}
+for s in sorted(featset, key=feat_sorter):
+    featindex[s] = len(featindex)
+
+featindex['truncate'] = len(featindex)
+
 featvalue = sorted(featindex.iteritems(), key=operator.itemgetter(1))
+
 fo = open(sys.argv[5], 'w')
 for fv in featvalue:
     fo.write(fv[0] + '\t' + str(fv[1]) + '\n')
@@ -107,10 +117,8 @@ for line in fi:
         first = False
         continue
     s = line.split('\t')
-    fo.write(s[0] + ' ' + s[23]) # click + winning price
-    index = featindex['truncate']
-    fo.write(' ' + str(index) + ":1")
-    for f in f1s: # every direct first order feature
+    fo.write(s[0])  # click + winning price
+    for f in f1s:  # every direct first order feature
         col = namecol[f]
         content = s[col]
         feat = str(col) + ':' + content
@@ -148,9 +156,7 @@ for line in fi:
         first = False
         continue
     s = line.split('\t')
-    fo.write(s[0] + ' ' + s[23]) # click + winning price
-    index = featindex['truncate']
-    fo.write(' ' + str(index) + ":1")
+    fo.write(s[0]) # click + winning price
     for f in f1s: # every direct first order feature
         col = namecol[f]
         if col >= len(s):
