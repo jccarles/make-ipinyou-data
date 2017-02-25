@@ -35,6 +35,6 @@ advertisers: $(BASE)/all/train.log.txt $(BASE)/all/test.log.txt
 	$(BASE)/python/splitadvertisers.py $(BASE) 25 $(BASE)/all/train.log.txt $(BASE)/all/test.log.txt
 
 yzx: advertisers
-	bash $(BASE)/mkyzxdata.sh
+	bash $(BASE)/mkyxdata.sh
 
 
