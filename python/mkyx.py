@@ -90,6 +90,8 @@ print 'feature size:', len(featset)
 
 def feat_sorter(feat):
     s = feat.find(':')
+    if feat[s+1:] == 'other':
+        return int(feat[:s]), ' '
     return int(feat[:s]), feat[s + 1:]
 
 

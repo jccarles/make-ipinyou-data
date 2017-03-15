@@ -5,7 +5,7 @@ ORIGINALFOLDER=./original-data/ipinyou.contest.dataset
 TRAIN=$(ORIGINALFOLDER)/train
 TEST=$(ORIGINALFOLDER)/test
 
-all: init clk train.log test.log advertisers yzx
+all: init clk train.log test.log advertisers yx
 
 init: $(ORIGINALFOLDER)
 	mkdir -p $(TRAIN)
@@ -34,7 +34,7 @@ test.log: $(BASE)/schema.txt
 advertisers: $(BASE)/all/train.log.txt $(BASE)/all/test.log.txt
 	$(BASE)/python/splitadvertisers.py $(BASE) 25 $(BASE)/all/train.log.txt $(BASE)/all/test.log.txt
 
-yzx: advertisers
+yx: advertisers
 	bash $(BASE)/mkyxdata.sh
 
 
