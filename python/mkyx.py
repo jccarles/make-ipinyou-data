@@ -78,12 +78,12 @@ for line in fi:
         feat = str(col) + ':' + content
         if feat not in featset:
             featset.add(feat)
-    col = namecol["usertag"]
-    tags = getTags(s[col])
-    for tag in tags:
-        feat = str(col) + ':' + tag
-        if feat not in featset:
-            featset.add(feat)
+    # col = namecol["usertag"]
+    # tags = getTags(s[col])
+    # for tag in tags:
+    #     feat = str(col) + ':' + tag
+    #     if feat not in featset:
+    #         featset.add(feat)
 
 print 'feature size:', len(featset)
 
@@ -136,14 +136,14 @@ for line in fi:
             feat = str(col) + ':other'
         index = featindex[feat]
         fo.write(' ' + str(index) + ":1")
-    col = namecol["usertag"]
-    tags = getTags(s[col])
-    for tag in tags:
-        feat = str(col) + ':' + tag
-        if feat not in featindex:
-            feat = str(col) + ':other'
-        index = featindex[feat]
-        fo.write(' ' + str(index) + ":1")
+    # col = namecol["usertag"]
+    # tags = getTags(s[col])
+    # for tag in tags:
+    #     feat = str(col) + ':' + tag
+    #     if feat not in featindex:
+    #         feat = str(col) + ':other'
+    #     index = featindex[feat]
+    #     fo.write(' ' + str(index) + ":1")
     fo.write('\n')
 fo.close()
 
@@ -178,13 +178,13 @@ for line in fi:
             feat = str(col) + ':other'
         index = featindex[feat]
         fo.write(' ' + str(index) + ":1")
-    col = namecol["usertag"]
-    tags = getTags(s[col])
-    for tag in tags:
-        feat = str(col) + ':' + tag
-        if feat not in featindex:
-            feat = str(col) + ':other'
-        index = featindex[feat]
-        fo.write(' ' + str(index) + ":1")
+    # col = namecol["usertag"]
+    # tags = getTags(s[col])
+    # for tag in tags:
+    #    feat = str(col) + ':' + tag
+    #     if feat not in featindex:
+    #         feat = str(col) + ':other'
+    #     index = featindex[feat]
+    #     fo.write(' ' + str(index) + ":1")
     fo.write('\n')
 fo.close()
