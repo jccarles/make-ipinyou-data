@@ -121,7 +121,7 @@ def log_2_feature(fi, fo):
             content = featTrans(f, s[col])
             feat = str(i + len(f1s)) + ':' + content
             if feat not in featindex:
-                feat = str(col) + ':other'
+                feat = str(i + len(f1s)) + ':other'
             index = featindex[feat]
             fo.write(' ' + str(index) + ":1")
         fo.write('\n')
